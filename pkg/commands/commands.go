@@ -18,47 +18,6 @@ import (
 	[127] - Backspace
 */
 
-func RunSync(ttyPath string) {
-	fmt.Println(ttyPath)
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	go func() {
-		<-c
-		os.Remove("/tmp/falcon.sock")
-		os.Exit(1)
-	}()
-
-	buff := make([]byte, 32*1024)
-
-	tty, err := os.OpenFile(ttyPath, os.O_RDWR, fs.ModeDevice)
-	if err != nil {
-		log.Fatalf("Failed to open tty: %s\n", err.Error())
-	}
-
-	// syscall.SetNonblock(int(tty.Fd()), true)
-	var termios syscall.Termios
-
-	syscall.Syscall(syscall.TCGETS)
-
-	defer tty.Close()
-
-	// ptm, pts, err := pty.Open()
-	// if err != nil {
-	// 	log.Fatalf("Failed to open PTY: %s\n", err.Error())
-	// }
-
-	for {
-		//log.Println("reading...")
-		n, err := tty.Read(buff)
-		if err != nil {
-			log.Fatalf("Failed to read from TTY: %s\n", err.Error())
-		}
-		// log.Println(buff)
-		log.Println(buff[:n])
-		log.Println(string(buff[:n]))
-	}
-}
-
 // change io.Copy to castom algorithm for communication between tty and pty
 func Run(ttyPath string) {
 	fmt.Println(ttyPath)

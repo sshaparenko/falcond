@@ -64,8 +64,7 @@ func Operate(wg *sync.WaitGroup) {
 			}
 			switch message.Command {
 			case "run":
-				commands.RunSync(message.TtyPath)
-				// commands.Run(message.TtyPath)
+				commands.Run(message.TtyPath)
 			default:
 
 			}
