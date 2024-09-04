@@ -1,0 +1,10 @@
+syntax = "proto3";
+package falcon;
+
+option go_package = "/pb";
+
+message Feather {
+  string command = 1;
+  string pid = 2;
+  string ttyPath = 3;
+}
